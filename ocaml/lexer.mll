@@ -38,16 +38,32 @@ rule tokenize = parse
       { RP        :: tokenize lexbuf }
   | '+'
       { PLUS      :: tokenize lexbuf }
-  | '-' 
+  | '-'
 	  { MINUS     :: tokenize lexbuf }
-  | '*' 
+  | '*'
 	  { MUL       :: tokenize lexbuf }
-  | '/' 
+  | '/'
 	  { DIV       :: tokenize lexbuf }
   | ":="
       { ASSIGN    :: tokenize lexbuf }
 
   (* TODO : other keywords *)
+  | "INT"
+    { INT_KW   :: tokenize lexbuff }
+  | "IF"
+    { IF_KW    :: tokenize lexbuff }
+  | "FI"
+    { FI_KW    :: tokenize lexbuff }
+  | "DO"
+    { DO_KW    :: tokenize lexbuff }
+  | "DONE"
+    { OD_KW    :: tokenize lexbuff }
+  | "WHILE"
+    { WHILE_KW :: tokenize lexbuff }
+  | "THEN"
+    { THEN_KW  :: tokenize lexbuff }
+  | "ELSE"
+    { ELSE_KW  :: tokenize lexbuff }
 
   (* other tokens (no conflict with keywords in VSL) *)
   | letter (letter | digit)* as lxm

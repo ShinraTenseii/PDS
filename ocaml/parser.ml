@@ -31,10 +31,11 @@ let list0 p sep = parser
 (* TODO : change when you extend the language *)
 let rec program = parser
   | [< v = primary_aux ; 'ASSIGN; e = expression >] -> AffectInstr(v, e)
- 
+  | [< 'INT; v = separation; l = some v ] -> v::l
+
 and expression = parser
   | [< e1 = factor; e = expression_aux e1 >] -> e
-	
+
 and expression_aux e1 = parser
   | [< 'PLUS;  e2 = factor; e = expression_aux (AddExpression (e1, e2)) >] -> e
   | [< 'MINUS;  e2 = factor; e = expression_aux (SubExpression (e1, e2)) >] -> e
@@ -42,22 +43,30 @@ and expression_aux e1 = parser
   (* TODO : that's all? *)
 
 and factor = parser
-  | [< e1 = primary; e = factor_aux e1 >] -> e 
+  | [< e1 = primary; e = factor_aux e1 >] -> e
 
 and factor_aux e1 = parser
-  | [< 'MUL;  e2 = factor; e = expression_aux (MulExpression (e1, e2)) >] -> e 
+  | [< 'MUL;  e2 = factor; e = expression_aux (MulExpression (e1, e2)) >] -> e
   | [< 'DIV;  e2 = factor; e = expression_aux (DivExpression (e1, e2)) >] -> e
   | [<>] -> e1
 
   (* TODO : that's all?*)
 
-and primary = parser 
-  | [< 'LP; e = expression; 'RP >] -> e   
+and primary = parser
+  | [< 'LP; e = expression; 'RP >] -> e
   | [< 'INTEGER x >] -> IntegerExpression x
 
-and primary_aux = parser 
+and primary_aux = parser
   | [< 'IDENT s >] -> IdentVar s
-  
+  | [< 'IDENT s; 'LC ; 'INTEGER x ; 'RC >] -> IdentTab (s, x)
+
+and separation = parser
+  | [< 'IDENT s >] -> IdentVar s
+  | [< 'IDENT s; 'LC ; 'INTEGER x ; 'RC >] -> IdentTab (s, x)
+  | [< 'COM; 'IDENT s >] -> IdentVar s
+  | [< 'COM; 'IDENT s ; 'LC ; 'INTEGER x; 'RC >] -> IdentTab (s, x)
+  | [<>] -> []
+
   (* TODO : that's all? *)
 
 and comma = parser

@@ -37,6 +37,22 @@ and llvm_affect = {
 	nameVar: string;
 }
 
+and llvm_decl_int = {
+  var_name: llvm_type;
+  equal: string;
+  allocate: string;
+  value_type: llvm_type;
+}
+
+and llvm_decl_tab_int = {
+  var_name: llvm_type;
+  equal: string;
+  allocate: string;
+  tab_value_type: llvm_type;
+  value_type: llvm_type;
+  value: string;
+}
+
 (* instructions sum type *)
 and llvm_instr =
   | Binop of llvm_binop
