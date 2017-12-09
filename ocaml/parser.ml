@@ -31,7 +31,7 @@ let list0 p sep = parser
 (* TODO : change when you extend the language *)
 let rec program = parser
   | [< v = primary_aux ; 'ASSIGN; e = expression >] -> AffectInstr(v, e)
-  | [< 'INT; v = separation; l = some v ] -> v::l
+  | [< 'INT_KW; v = separation >] -> v
 
 and expression = parser
   | [< e1 = factor; e = expression_aux e1 >] -> e

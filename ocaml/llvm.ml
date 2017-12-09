@@ -58,6 +58,8 @@ and llvm_instr =
   | Binop of llvm_binop
   | Affect of llvm_affect
   | Return of llvm_return
+  | DeclVar of llvm_decl_int
+  | DeclTab of llvm_decl_tab_int
 
 (* Note: instructions in list are taken in reverse order in
  * string_of_ir in order to permit easy list construction !!
@@ -86,6 +88,7 @@ and string_of_instr_list l =
 
 and string_of_instr = function
   | Binop v -> v.lvalue_name ^ " = " ^ v.op ^ " " ^ (string_of_llvm_type v.lvalue_type) ^ " " ^ v.left ^ ", " ^ v.right ^ "\n"
-  | Return v ->
-      "ret " ^ (string_of_llvm_type v.ret_type) ^ " " ^ v.ret_value ^ "\n"
+  | Return v -> "ret " ^ (string_of_llvm_type v.ret_type) ^ " " ^ v.ret_value ^ "\n"
   | Affect v -> v.assign ^ " " ^ (string_of_llvm_type v.value_type) ^ " " ^ v.valueVar ^ ", " ^ (string_of_llvm_type v.pointer) ^ " " ^ v.nameVar ^ "\n"
+  | DeclVar v->(string_of_llvm_type v.var_name) ^ " " ^ v.equal ^ " " ^ v.allocate ^ " " ^(string_of_llvm_type v.value_type) ^ "\n"
+  | DeclTab v -> (string_of_llvm_type v.var_name) ^ " " ^ v.equal ^ " " ^ v.allocate ^ " " ^(string_of_llvm_type v.tab_value_type) ^ ", " ^(string_of_llvm_type v.value_type)^ " " ^v.value^"\n"

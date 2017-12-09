@@ -11,16 +11,13 @@ type expression =
   | IdentExprVar of string
   | IdentExprTab of string * int
 
-type instruction =
-  | InstrAffect of variable * expression
-  | InstrDeclar of variable
-
 type variable =
   | IdentVar of string
-  | IdentTab of string*int
+  | IdentTab of string * int
 
 type instruction =
   | AffectInstr of variable * expression
+  | DeclarInstr of variable
 
 type typ =
   | Type_Int

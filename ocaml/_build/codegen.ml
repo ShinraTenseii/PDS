@@ -17,7 +17,7 @@ let rec ir_of_ast p =
 
 
 (* TODO : change when you extend the language *)
-  in let (ir, _) = ir_of_affectation (empty_ir, []) p
+  in let (ir, _) = ir_of_instruction (empty_ir, []) p
   (* adds the return instruction *)
   in let new_ir = {
     header = ir.header;
@@ -114,3 +114,48 @@ and  ir_of_affectation (ir, scope) =
    (* | IdentVar s -> ((ir, scope), (valueVar, LLVM_Type_Int))*)
   (* in function
     | IdentVar (t,s) -> aux "store" LLVM_Type_Int t LLVM_Type_Pointer s *)
+and ir_of_instruction (ir, scope) = function
+  | AffectInstr(var, exp) -> ir_of_affectation(ir, scope)
+  | DeclarInstr(var) -> ir_of_declaration (ir, scope)
+
+and ir_of_declaration (ir, scope) =
+
+  let aux var eq op typ =
+
+  and let resultVar = affectVar var
+
+  in let codeDec = DeclVar {
+    var_name=resultVar;
+    equal=eq;
+    allocate=op;
+    value_type=typ;
+    }
+
+  in ({
+    header = ir.header;
+    code = codeDec :: ir.code;
+  }, scope)
+
+  in function
+    | DeclarInstr v -> aux v "=" "alloca" LLVM_Type_Int
+
+and let aux var eq op typ typ2 n =
+
+  in let resultVar = affectVar var
+
+  in codeDec = DeclTab {
+    var_name=resultVar;
+    equal=eq;
+    allocate=op;
+    tab_value_type=typ;
+    value_type=typ2;
+    value=n;
+  }
+
+in ({
+    header = ir.header;
+    code = codeDec :: ir.code;
+  }, scope)
+
+  in function
+    | DeclarInstr (v, n) -> aux2 v "=" "alloca" LLVM_Type_Int, LLVM_Type_Int n
